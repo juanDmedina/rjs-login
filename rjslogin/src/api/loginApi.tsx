@@ -6,7 +6,7 @@ const loginApi = axios.create({ baseURL });
 
 loginApi.interceptors.request.use(
     async(config) => {
-        const token = localStorage.getItem('token');
+        const token =  JSON.parse(localStorage.getItem('token')!);
         if ( token ) {
             config.headers['x-token'] = token;
         }
