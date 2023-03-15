@@ -1,33 +1,47 @@
-import React, {useState} from 'react';
-import TextInputA from '../atoms/TextInputA';
-import {TextA} from '../atoms/TextA';
-import {TextTitle} from '../atoms/TextTitle';
+import React, { useState } from "react";
+import TextInputA from "../atoms/TextInputA";
+import { TextA } from "../atoms/TextA";
+import { TextTitle } from "../atoms/TextTitle";
 
-import validationInput from '../../helper/validationInput';
-import {TextErrorLabel} from '../atoms/TextErrorLabel';
-import { useAppDispatch } from '../../hooks/loginHooks';
-import { setEmail, setName, setPassword } from '../../redux/slices/authSlice';
+import validationInput from "../../helper/validationInput";
+import { TextErrorLabel } from "../atoms/TextErrorLabel";
+import { useAppDispatch } from "../../hooks/loginHooks";
+import { setEmail, setName, setPassword } from "../../redux/slices/authSlice";
 
 const TextInputsRegister = () => {
   const [focusPassword, setFocusPassword] = useState(false);
   const [focusCorreo, setFocusCorreo] = useState(false);
   const [focusName, setFocusName] = useState(false);
-  const [correo, setCorreo] = useState('');
-  const [contrasena, setContrasena] = useState('');
-  const [nombre, setNombre] = useState('');
+  const [correo, setCorreo] = useState("");
+  const [contrasena, setContrasena] = useState("");
+  const [nombre, setNombre] = useState("");
   const dispatch = useAppDispatch();
 
-    const changeFocusName = () => {
-      setFocusName(true);
-    };
-
-    const changeFocusPassword = () => {
-      setFocusPassword(true);
+  const changeFocusName = () => {
+    setFocusName(true);
   };
-  
-      const changeFocusCorreo = () => {
-        setFocusCorreo(true);
-      };
+
+  const changeFocusPassword = () => {
+    setFocusPassword(true);
+  };
+
+  const changeFocusCorreo = () => {
+    setFocusCorreo(true);
+  };
+
+  const OnChangeName = (value: React.SetStateAction<string>) => {
+    setNombre(value.toString());
+    dispatch(setName({ name: value.toString() }));
+  };
+
+  const OnChangePassword = (value: React.SetStateAction<string>) => {
+    setContrasena(value.toString());
+    dispatch(setPassword({ password: value.toString() }));
+  };
+  const OnChangeEmail = (value: React.SetStateAction<string>) => {
+    setCorreo(value.toString());
+    dispatch(setEmail({ email: value.toString() }));
+  };
   return (
     <>
       <TextTitle>Register</TextTitle>
@@ -37,8 +51,7 @@ const TextInputsRegister = () => {
         type="text"
         value={nombre}
         onChange={(e: { target: { value: React.SetStateAction<string> } }) => {
-          setNombre(e.target.value);
-          dispatch(setName({ nombre }));
+          OnChangeName(e.target.value);
         }}
         placeholder="Input name"
         onFocus={() => changeFocusName}
@@ -54,8 +67,7 @@ const TextInputsRegister = () => {
         type="email"
         value={correo}
         onChange={(e: { target: { value: React.SetStateAction<string> } }) => {
-          setCorreo(e.target.value);
-          dispatch(setEmail({ correo }));
+          OnChangeEmail(e.target.value);
         }}
         placeholder="Input email"
         onFocus={() => changeFocusCorreo}
@@ -71,8 +83,7 @@ const TextInputsRegister = () => {
         type="password"
         value={contrasena}
         onChange={(e: { target: { value: React.SetStateAction<string> } }) => {
-          setContrasena(e.target.value);
-          dispatch(setPassword({ contrasena }));
+          OnChangePassword(e.target.value);
         }}
         placeholder="Input password"
         onFocus={() => changeFocusPassword}

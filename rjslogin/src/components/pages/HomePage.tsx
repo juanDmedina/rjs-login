@@ -29,15 +29,17 @@ const HomePage = () => {
   }, [status]);
 
   return (
-    <Container>
-      <div>
-        <Navbar />
-        <TextTitle>Welcome to HomePage</TextTitle>
-        <ButtonExample onClick={exitPage}>
-          <ButtonText>Exit</ButtonText>
-        </ButtonExample>
-      </div>
-    </Container>
+    <>
+      <Navbar />
+      <Container>
+        <div>
+          <TextTitle>Welcome to HomePage</TextTitle>
+          <ButtonExample onClick={exitPage}>
+            <ButtonText>Exit</ButtonText>
+          </ButtonExample>
+        </div>
+      </Container>
+    </>
   );
 };
 

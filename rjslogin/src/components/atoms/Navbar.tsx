@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from "react";
 import {
   Nav,
   NavbarContainer,
-  Menu,
   MenuItemBtn,
   MenuLinkBtn,
 } from "../../styles/Navbar.styles";
@@ -10,10 +9,7 @@ import { ButtonExample } from "./ButtonA";
 import { AuthContext } from "../../context/AuthContext";
 const Navbar = () => {
   const { logOut } = useContext(AuthContext);
-  const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
-  const handleClick = () => setClick(!click);
-  const closeMenu = () => setClick(false);
 
   const showButton = () => {
     if (window.innerWidth <= 1000) {
@@ -31,11 +27,10 @@ const Navbar = () => {
   return (
     <Nav>
       <NavbarContainer>
-        <Menu onClick={handleClick}>
           <MenuItemBtn>
             {button ? (
               <MenuLinkBtn to="/order-now">
-                <ButtonExample onClick={closeMenu}>Home</ButtonExample>
+                <ButtonExample onClick={logOut}>Exit</ButtonExample>
               </MenuLinkBtn>
             ) : (
               <MenuLinkBtn to="/login">
@@ -43,7 +38,6 @@ const Navbar = () => {
               </MenuLinkBtn>
             )}
           </MenuItemBtn>
-        </Menu>
       </NavbarContainer>
     </Nav>
   );

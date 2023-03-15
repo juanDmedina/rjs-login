@@ -2,19 +2,19 @@
 import { useContext, useEffect } from "react";
 
 import { AuthContext } from "../../context/AuthContext";
-import { useAppSelector } from "../../hooks/loginHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/loginHooks";
 import {
   selectErrorMessage,
   selectName,
   selectEmail,
   selectPassword,
+  removeMessageError,
 } from "../../redux/slices/authSlice";
 
 import TextInputsRegister from "../organisms/TextInputsRegister";
 import RegisterButtons from "../molecules/RegisterButtons";
 
 import { useNavigate } from "react-router-dom";
-import Alert from "../molecules/Alert";
 import { Container } from "../../styles/GlobalStyles";
 
 export const RegisterPage = () => {
@@ -24,18 +24,7 @@ export const RegisterPage = () => {
   const nombre = useAppSelector(selectName);
   const correo = useAppSelector(selectEmail);
   const password = useAppSelector(selectPassword);
-
-  useEffect(() => {
-    if (errorMessage.length === 0) {
-      return;
-    }
-
-    if (errorMessage.includes("Registro Exitoso")) {
-      Alert("", errorMessage);
-      return;
-    }
-    Alert("Registro incorrecto", errorMessage);
-  }, [errorMessage]);
+  const dispatch = useAppDispatch();
 
   const onRegister = () => {
     signUp({
@@ -44,6 +33,20 @@ export const RegisterPage = () => {
       password,
     });
   };
+
+  useEffect(() => {
+    if (errorMessage.length === 0) {
+      return;
+    }
+    if (errorMessage.includes("Registro Exitoso")) {
+      dispatch(removeMessageError());
+      alert("" + errorMessage);
+      return;
+    }
+    dispatch(removeMessageError());
+    alert("Registro incorrecto :" + errorMessage);
+    
+  }, [errorMessage]);
 
   return (
     <Container>

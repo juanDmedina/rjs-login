@@ -2,15 +2,16 @@
 import { useEffect, useContext } from "react";
 import LoginButtons from "../molecules/LoginButtons";
 import TextInputsLogin from "../organisms/TextInputsLogin";
-import { useAppSelector } from "../../hooks/loginHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/loginHooks";
 import { AuthContext } from "../../context/AuthContext";
 import {
   selectErrorMessage,
   selectEmail,
   selectPassword,
+  selectStatus,
+  removeMessageError,
 } from "../../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
-import Alert from "../molecules/Alert";
 import { Container } from "../../styles/GlobalStyles";
 
 const LoginPage = () => {
@@ -19,10 +20,18 @@ const LoginPage = () => {
   const errorMessage = useAppSelector(selectErrorMessage);
   const correo = useAppSelector(selectEmail);
   const password = useAppSelector(selectPassword);
+  const status = useAppSelector(selectStatus);
+  const dispatch = useAppDispatch();
 
   const handleLogin = () => {
     signIn({ correo, password });
   };
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      navigate("/home");
+    }
+  }, [status]);
 
   useEffect(() => {
     if (errorMessage.length === 0) {
@@ -30,10 +39,10 @@ const LoginPage = () => {
     }
 
     if (errorMessage.includes("incorrecta")) {
-      Alert("Login incorrecto", errorMessage);
+      dispatch(removeMessageError());
+      alert("Login incorrecto: " + errorMessage);
     }
   }, [errorMessage]);
-
   return (
     <Container>
       <div>

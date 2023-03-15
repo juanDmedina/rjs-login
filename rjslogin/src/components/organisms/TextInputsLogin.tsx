@@ -7,11 +7,13 @@ import { TextErrorLabel } from "../atoms/TextErrorLabel";
 import { useAppDispatch } from "../../hooks/loginHooks";
 import { setEmail, setPassword } from "../../redux/slices/authSlice";
 
+
 const TextInputsLogin = () => {
   const [focus, setFocus] = useState(false);
   const [focusContrasena, setFocusContrasena] = useState(false);
   const [correo, setCorreo] = useState("");
   const [contrasena, setContrasena] = useState("");
+
   const dispatch = useAppDispatch();
 
   const changeFocus = () => {
@@ -21,6 +23,16 @@ const TextInputsLogin = () => {
   const changeFocusContrasena = () => {
     setFocusContrasena(true);
   };
+
+  const OnChangePassword = (value: React.SetStateAction<string>) => {
+    setContrasena(value.toString());
+    dispatch(setPassword({ password: value.toString() }));
+  };
+  const OnChangeEmail = (value: React.SetStateAction<string>) => {
+    setCorreo(value.toString());
+    dispatch(setEmail({ email: value.toString() }));
+  }
+
   return (
     <>
       <TextTitle>Login</TextTitle>
@@ -32,8 +44,7 @@ const TextInputsLogin = () => {
           onChange={(e: {
             target: { value: React.SetStateAction<string> };
           }) => {
-            setCorreo(e.target.value);
-            dispatch(setEmail({ correo }));
+            OnChangeEmail(e.target.value);
           }}
           placeholder="Input email"
           onFocus={() => changeFocus}
@@ -51,8 +62,7 @@ const TextInputsLogin = () => {
           onChange={(e: {
             target: { value: React.SetStateAction<string> };
           }) => {
-            setContrasena(e.target.value);
-            dispatch(setPassword({ contrasena }));
+            OnChangePassword(e.target.value);
           }}
           placeholder="Input password"
           onFocus={() => changeFocusContrasena}
