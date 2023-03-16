@@ -10,6 +10,7 @@ import { ButtonExample, ButtonText } from "../atoms/ButtonA";
 import { useContext, useEffect } from "react";
 import { Container } from "../../styles/GlobalStyles";
 import Navbar from "../atoms/Navbar";
+import { CenterView } from "../atoms/CenterView";
 
 const HomePage = () => {
   const { logOut } = useContext(AuthContext);
@@ -34,9 +35,11 @@ const HomePage = () => {
       <Container>
         <div>
           <TextTitle>Welcome to HomePage</TextTitle>
-          <ButtonExample onClick={exitPage}>
-            <ButtonText>Exit</ButtonText>
-          </ButtonExample>
+          <CenterView>
+            <ButtonExample onClick={exitPage}>
+              <ButtonText>Exit</ButtonText>
+            </ButtonExample>
+          </CenterView>
         </div>
       </Container>
     </>

@@ -54,7 +54,7 @@ const TextInputsRegister = () => {
           OnChangeName(e.target.value);
         }}
         placeholder="Input name"
-        onFocus={() => changeFocusName}
+        onFocus={changeFocusName}
       />
       {validationInput(nombre) && focusName ? (
         <TextErrorLabel>fiel empty or lenght less than 6</TextErrorLabel>
@@ -70,7 +70,7 @@ const TextInputsRegister = () => {
           OnChangeEmail(e.target.value);
         }}
         placeholder="Input email"
-        onFocus={() => changeFocusCorreo}
+        onFocus={changeFocusCorreo}
       />
       {validationInput(correo) && focusCorreo ? (
         <TextErrorLabel>fiel empty or lenght less than 6</TextErrorLabel>
@@ -86,7 +86,7 @@ const TextInputsRegister = () => {
           OnChangePassword(e.target.value);
         }}
         placeholder="Input password"
-        onFocus={() => changeFocusPassword}
+        onFocus={changeFocusPassword}
       />
       {validationInput(contrasena) && focusPassword ? (
         <TextErrorLabel>fiel empty or lenght less than 6</TextErrorLabel>

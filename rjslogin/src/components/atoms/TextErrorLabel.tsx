@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const TextErrorLabel = styled.label`
   color: red;
-  margin-top: 15px;
+  display: block;
+  margin-top: 5px;
   font-weight: bold;
 `;
