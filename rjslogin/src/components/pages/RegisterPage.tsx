@@ -1,31 +1,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useContext, useEffect } from "react";
-
-import { AuthContext } from "../../context/AuthContext";
-import { useAppDispatch, useAppSelector } from "../../hooks/loginHooks";
-import {
-  selectErrorMessage,
-  selectName,
-  selectEmail,
-  selectPassword,
-  removeMessageError,
-} from "../../redux/slices/authSlice";
-
+import { useEffect } from "react";
+import { LoginContext } from "../../context/login/AuthContext";
 import TextInputsRegister from "../organisms/TextInputsRegister";
 import RegisterButtons from "../molecules/RegisterButtons";
-
 import { useNavigate } from "react-router-dom";
 import { Container } from "../../styles/GlobalStyles";
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
-  const { signUp } = useContext(AuthContext);
-  const errorMessage = useAppSelector(selectErrorMessage);
-  const nombre = useAppSelector(selectName);
-  const correo = useAppSelector(selectEmail);
-  const password = useAppSelector(selectPassword);
-  const dispatch = useAppDispatch();
-
+  const {
+    signUp,
+    removeError,
+    nameSelector,
+    errorMessageSelector,
+    emailSelector,
+    passwordSelector,
+  } = LoginContext();
+  let nombre = nameSelector === undefined ? "" : nameSelector;
+  let errorMessage =
+    errorMessageSelector === undefined ? "" : errorMessageSelector;
+  let correo = emailSelector === undefined ? "" : emailSelector;
+  let password = passwordSelector === undefined ? "" : passwordSelector;
   const onRegister = () => {
     signUp({
       nombre,
@@ -39,13 +34,12 @@ export const RegisterPage = () => {
       return;
     }
     if (errorMessage.includes("Registro Exitoso")) {
-      dispatch(removeMessageError());
+      removeError();
       alert("" + errorMessage);
       return;
     }
-    dispatch(removeMessageError());
+    removeError();
     alert("Registro incorrecto :" + errorMessage);
-    
   }, [errorMessage]);
 
   return (

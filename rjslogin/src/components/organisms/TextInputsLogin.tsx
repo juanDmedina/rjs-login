@@ -4,16 +4,16 @@ import { TextA } from "../atoms/TextA";
 import { TextTitle } from "../atoms/TextTitle";
 import validationInput from "../../helper/validationInput";
 import { TextErrorLabel } from "../atoms/TextErrorLabel";
-import { useAppDispatch } from "../../hooks/loginHooks";
 import { setEmail, setPassword } from "../../redux/slices/authSlice";
+import { LoginContext } from "../../context/login/AuthContext";
 
 const TextInputsLogin = () => {
+  const { dispatch } = LoginContext();
   const [focus, setFocus] = useState(false);
   const [focusContrasena, setFocusContrasena] = useState(false);
   const [correo, setCorreo] = useState("");
   const [contrasena, setContrasena] = useState("");
-
-  const dispatch = useAppDispatch();
+  const dispatchFunction = dispatch === undefined ? () => "" : dispatch;
 
   const changeFocus = () => {
     setFocus(true);
@@ -25,11 +25,11 @@ const TextInputsLogin = () => {
 
   const OnChangePassword = (value: React.SetStateAction<string>) => {
     setContrasena(value.toString());
-    dispatch(setPassword({ password: value.toString() }));
+    dispatchFunction(setPassword({ password: value.toString() }));
   };
   const OnChangeEmail = (value: React.SetStateAction<string>) => {
     setCorreo(value.toString());
-    dispatch(setEmail({ email: value.toString() }));
+    dispatchFunction(setEmail({ email: value.toString() }));
   };
 
   return (

@@ -3,18 +3,15 @@
 import { useNavigate } from "react-router-dom";
 import { TextTitle } from "../atoms/TextTitle";
 import Loader from "../atoms/Loader";
-import { AuthContext } from "../../context/AuthContext";
-import { useAppSelector } from "../../hooks/loginHooks";
-import { selectStatus } from "../../redux/slices/authSlice";
+import { LoginContext } from "../../context/login/AuthContext";
 import { ButtonExample, ButtonText } from "../atoms/ButtonA";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { Container } from "../../styles/GlobalStyles";
-import Navbar from "../atoms/Navbar";
 import { CenterView } from "../atoms/CenterView";
 
 const HomePage = () => {
-  const { logOut } = useContext(AuthContext);
-  const status = useAppSelector(selectStatus);
+  const { logOut, statusSelector } = LoginContext();
+  let status = statusSelector === undefined ? "error" : statusSelector;
   const navigate = useNavigate();
 
   const exitPage = () => {
@@ -30,19 +27,16 @@ const HomePage = () => {
   }, [status]);
 
   return (
-    <>
-      <Navbar />
-      <Container>
-        <div>
-          <TextTitle>Welcome to HomePage</TextTitle>
-          <CenterView>
-            <ButtonExample onClick={exitPage}>
-              <ButtonText>Exit</ButtonText>
-            </ButtonExample>
-          </CenterView>
-        </div>
-      </Container>
-    </>
+    <Container>
+      <div>
+        <TextTitle>Welcome to HomePage</TextTitle>
+        <CenterView>
+          <ButtonExample onClick={exitPage}>
+            <ButtonText>Exit</ButtonText>
+          </ButtonExample>
+        </CenterView>
+      </div>
+    </Container>
   );
 };
 

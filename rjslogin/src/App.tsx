@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./components/pages/LoginPage";
 import { RegisterPage } from "./components/pages/RegisterPage";
 import HomePage from "./components/pages/HomePage";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "./context/login/AuthContext";
 import GlobalStyles from "./styles/GlobalStyles";
 import { Provider } from "react-redux";
 import { store } from "./redux/stores/store";

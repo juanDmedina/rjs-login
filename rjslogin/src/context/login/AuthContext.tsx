@@ -1,20 +1,30 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { createContext, useEffect } from "react";
+import { createContext, useContext, useEffect } from "react";
 import {
   LoginResponse,
   LoginData,
   RegisterData,
-} from "../interfaces/appInterfaces";
-import { useAppDispatch } from "../hooks/loginHooks";
-import loginApi from "../api/loginApi";
+  Usuario,
+} from "../../interfaces/appInterfaces";
+import { useAppDispatch, useAppSelector } from "../../hooks/loginHooks";
+import loginApi from "../../api/loginApi";
 import {
+  AuthState,
   addMessageError,
-  initial,
+  initialRun,
   login,
   logout,
   register,
   removeMessageError,
-} from "../redux/slices/authSlice";
+  selectEmail,
+  selectErrorMessage,
+  selectName,
+  selectPassword,
+  selectStatus,
+  selectToken,
+  selectUser
+} from '../../redux/slices/authSlice'
+import { AnyAction, Dispatch, ThunkDispatch } from "@reduxjs/toolkit";
 
 type AuthContextProps = {
   checkToken: () => void;
@@ -22,29 +32,53 @@ type AuthContextProps = {
   signIn: (loginData: LoginData) => void;
   logOut: () => void;
   removeError: () => void;
+  statusSelector: string;
+  tokenSelector: string | null;
+  errorMessageSelector: string;
+  userSelector: Usuario | null;
+  nameSelector: string;
+  emailSelector: string;
+  passwordSelector: string;
+  dispatch:
+    | (ThunkDispatch<
+        {
+          authentication: AuthState;
+        },
+        undefined,
+        AnyAction
+      > &
+        Dispatch<AnyAction>)
+    | undefined;
 };
 
 export const AuthContext = createContext({} as AuthContextProps);
 
 export const AuthProvider = ({ children }: any) => {
   const dispatch = useAppDispatch();
+  const statusSelector = useAppSelector(selectStatus);
+  const tokenSelector = useAppSelector(selectToken);
+  const errorMessageSelector = useAppSelector(selectErrorMessage);
+  const userSelector = useAppSelector(selectUser);
+  const nameSelector = useAppSelector(selectName);
+  const emailSelector = useAppSelector(selectEmail);
+  const passwordSelector = useAppSelector(selectPassword);
 
   useEffect(() => {
     checkToken();
   }, []);
 
   const checkToken = async () => {
-    const token =  JSON.parse(localStorage.getItem("token")!);
+    const token = JSON.parse(localStorage.getItem("token")!);
 
     // No token, no autenticado
     if (!token) {
-      return dispatch(initial());
+      return dispatch(initialRun());
     }
 
     // Hay token
     const resp = await loginApi.get("/auth");
     if (resp.status !== 200) {
-      return dispatch(initial());
+      return dispatch(initialRun());
     }
 
     localStorage.setItem("token", JSON.stringify(resp.data.token));
@@ -98,9 +132,19 @@ export const AuthProvider = ({ children }: any) => {
         signIn,
         logOut,
         removeError,
+        statusSelector,
+        tokenSelector,
+        errorMessageSelector,
+        userSelector,
+        nameSelector,
+        emailSelector,
+        passwordSelector,
+        dispatch,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
+
+export const LoginContext = () => useContext(AuthContext);
